@@ -1,0 +1,18 @@
+Expression= 1 + (3 * 5) / (6 - 4)
+1 + (3 * 5) / (6 - 4)1 + (3 * 5) / (6 - 4)
+Post Fix Expression= 135*64-/+
+
+Result of evaluation = 8
+
+Expression= (1 + 3 )* 5 / (6 - 4)+2
+(1 + 3 )* 5 / (6 - 4)+2(1 + 3 )* 5 / (6 - 4)+2
+Post Fix Expression= 13+5*64-/2+
+
+Result of evaluation = 12
+
+Expression= 1 + (3 * 5) / 6 - 4)
+1 + (3 * 5) / 6 - 4)Parenthesis mismatch 
+
+Expression= 1 + (3 * 5() / (6 - 4)
+1 + (3 * 5() / (6 - 4)1 + (3 * 5() / (6 - 4)Parenthesis mismatch 
+
