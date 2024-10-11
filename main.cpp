@@ -18,15 +18,28 @@ bool checkMatch(std::string expression){
   while( input>>ch){
   
   // if the character is '(' push it onto the stack
-  
+  if (ch == '(') {
+    store.add(ch);
+  }
   // if character is ')' remove the matching '(' from the stack. If stack is empty return false
   //if not empty and '(' not found on the stack, return false
-  
+  if (ch == ')') {
+    if (store.empty()) {
+      return false;
+    }
+    char top = store.pop();
+    if (top != '(') {
+      return false;
+    }
+  }
   // if parenthesis are matched, then stack is empty
  
 }
  return store.empty();
 }
+
+
+
 //GIVEN
 //return an integer that corresponds to the OPERATOR
 
@@ -39,11 +52,17 @@ int precedence(char oper){
    return 2;
   return 0;
 }
+
+
+
 //GIVEN
 //check if character is a number
 bool isOperand(char ch){
   return (ch>='0'&&ch<='9');
 }
+
+
+
 
 //TODO
 //Requires the accurately convered expression as a post fix string
@@ -56,11 +75,39 @@ int evaluate(std::string postfix){
   int data=0;
   Stack<int> result;
 
-
   //store the expression on the stack
+  Stack<char> store;
+  Stack<char> temp;
+  while(input >> ch) {
+    temp.add(ch);
+  }
+ 
 
     //since this reverses the postfi expression, store in another stack to 
     //reverse the stack
+  while(!temp.empty()) {
+    store.add(temp.pop());
+  }
+
+  while(!store.empty()) {
+    ch = store.pop();
+    if(isOperand(ch)) {
+      data= int(ch)-48;
+      result.push(data);
+    }
+    else if (ch == '/' || ch == '*' || ch=='-' || ch=='+') {
+      int one, two;
+      two = result.pop();
+      one = result.pop();
+      switch(ch) {
+        case '*': result.push(one*two); break;
+        case '/': result.push(one/two); break;
+        case '-': result.push(one-two); break;
+        case '+': result.push(one+two); break;
+        default: break;
+      }
+    }
+  }
   
    //if operand, store numeric value on result stack
  // use int(ch)-48 to convert char to integer value
@@ -68,12 +115,13 @@ int evaluate(std::string postfix){
     // apply the operator on them and store the resulting value in result stack
      
     // GIVEN
-    //switch (ch){
-     // case '*': result.push(one*two); break;
-     // case '/':result.push(one/two);break;
-     // case '+': result.push(one+two); break;
-      //case '-': result.push(one-two); break;
-     // default: break;
+    // switch (ch){
+    //  case '*': result.push(one*two); break;
+    //  case '/':result.push(one/two);break;
+    //  case '+': result.push(one+two); break;
+    //   case '-': result.push(one-two); break;
+    //  default: break;
+    
      
     
 
@@ -82,12 +130,20 @@ int evaluate(std::string postfix){
   return result.pop();
   
 }
+
+
+
+
 //GIVEN check precedence level of two operators
 bool checkPrec(char oper1, char oper2){
   if (precedence(oper1)>precedence(oper2))
     return true;
   else return false;
 }
+
+
+
+
 //TODO
 std::string convertToPostfix(std::string expression){
  
@@ -99,11 +155,47 @@ std::string convertToPostfix(std::string expression){
   
   while (input>>ch){
   // if characher is operand then append to postfix expression
+  if(isOperand(ch)) {
+    postfix += ch;
+  }
   // if character is '('
   // generate the post fix equivalent of the subexpression
+  if (ch == '(') {
+    std::string a = "";
+    while(ch != ')') {
+      input>>ch;
+      if (isOperand(ch)) {
+        a+= ch;
+      }
+      else if (ch == '+' || ch == '-' || ch == '/' || ch == '*') {
+        opstack.push(ch);
+      }
+    }
+    a += opstack.pop();
+    postfix += a;
+
+  }
   //if operator, push it on the operator stack, keeping precedence in mind // if character greater in precedence than the operator on top of the stack
   // copy back operators appropriately to the postfix string a
+  if (ch == '+' || ch == '-' || ch == '/' || ch == '*') {
+    if (opstack.empty()) {
+      opstack.add(ch);
+    }
+    else if (checkPrec(ch, opstack.peek())) {
+      opstack.add(ch);
+    }
+    else {
+      postfix += opstack.pop();
+      opstack.add(ch);
+    }
+
   }
+  }
+  while(!opstack.empty()) {
+    postfix+= opstack.pop();
+  }
+  
+  
   return postfix;
 }
 //GIVEN

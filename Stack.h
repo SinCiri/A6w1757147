@@ -6,6 +6,5 @@ template <class T> class Stack: public LinkedList<T>{
   public: T peek();
   public: T pop();
   public: void push(T e);
-
   
 };
