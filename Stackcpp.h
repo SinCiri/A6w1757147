@@ -23,6 +23,7 @@ T Stack<T>::  pop(){
   //if Stack is empty throw an exception
   //Otherwise return a copy of the top element
   // and remove it from the stack
+  //modifies
   if (this->empty()) {
     throw std::string("stack is empty");
   }
